@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.theservicemarketingguys.com/standards/open-service-profile/v0.1/request_service_booking.input.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "confirmed",
+    "serviceSlug",
+    "preferredDate",
+    "customer"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "confirmed": {
+      "const": true
+    },
+    "serviceSlug": {
+      "$ref": "tools-common.schema.json#/$defs/Slug"
+    },
+    "preferredDate": {
+      "$ref": "tools-common.schema.json#/$defs/CalendarDate"
+    },
+    "preferredTime": {
+      "$ref": "tools-common.schema.json#/$defs/WindowId"
+    },
+    "location": {
+      "$ref": "tools-common.schema.json#/$defs/Slug"
+    },
+    "customer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "contactMethod",
+        "contactAuthorized"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 254
+        },
+        "address": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "state": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "zip": {
+          "$ref": "tools-common.schema.json#/$defs/Zip"
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "contactMethod": {
+          "enum": [
+            "call",
+            "text",
+            "email"
+          ]
+        },
+        "contactAuthorized": {
+          "const": true
+        },
+        "vehicle": {
+          "type": "object",
+          "properties": {
+            "year": {
+              "type": "string",
+              "maxLength": 4
+            },
+            "make": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "model": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "mileage": {
+              "type": "string",
+              "maxLength": 12
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "contactMethod": {
+                "const": "email"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "email"
+            ]
+          },
+          "else": {
+            "required": [
+              "phone"
+            ]
+          }
+        }
+      ]
+    },
+    "agent": {
+      "type": "object",
+      "required": [
+        "channel"
+      ],
+      "properties": {
+        "channel": {
+          "enum": [
+            "mcp",
+            "rest",
+            "webmcp",
+            "other"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 80
+        }
+      }
+    }
+  },
+  "description": "Input for the Open Service Profile v0.1 tool request_service_booking."
+}

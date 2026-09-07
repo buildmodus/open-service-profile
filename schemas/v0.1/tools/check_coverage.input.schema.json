@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.theservicemarketingguys.com/standards/open-service-profile/v0.1/check_coverage.input.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "zip"
+  ],
+  "properties": {
+    "zip": {
+      "$ref": "tools-common.schema.json#/$defs/Zip"
+    }
+  },
+  "description": "Input for the Open Service Profile v0.1 tool check_coverage."
+}

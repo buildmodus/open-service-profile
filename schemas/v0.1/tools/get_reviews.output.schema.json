@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.theservicemarketingguys.com/standards/open-service-profile/v0.1/get_reviews.output.schema.json",
+  "type": "object",
+  "required": [
+    "reviewCount",
+    "notice",
+    "reviews",
+    "canonicalSiteUrl"
+  ],
+  "properties": {
+    "aggregateRating": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "reviewCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "source": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "business",
+            "location",
+            "all_locations"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "$ref": "tools-common.schema.json#/$defs/Url"
+        },
+        "locationCount": {
+          "type": "integer"
+        },
+        "locationsWithData": {
+          "type": "integer"
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "tools-common.schema.json#/$defs/LocationRef"
+          }
+        }
+      }
+    },
+    "notice": {
+      "type": "string"
+    },
+    "reviews": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "rating",
+          "text"
+        ],
+        "properties": {
+          "author": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 40
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "location": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "canonicalSiteUrl": {
+      "$ref": "tools-common.schema.json#/$defs/Url"
+    }
+  },
+  "description": "Output for the Open Service Profile v0.1 tool get_reviews."
+}

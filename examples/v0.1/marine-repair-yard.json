@@ -1,0 +1,177 @@
+{
+  "specVersion": "0.1",
+  "updatedAt": "2026-09-07T14:00:00Z",
+  "conformance": {
+    "level": 2
+  },
+  "business": {
+    "displayName": "Harbor Point Marine Service",
+    "legalName": "Harbor Point Marine Service Inc.",
+    "trades": [
+      "boat repair",
+      "marine engine service"
+    ],
+    "serviceModel": "both",
+    "parentOrganization": {
+      "name": "Narragansett Marine Group",
+      "url": "https://narragansettmarinegroup.example"
+    },
+    "reviewProfiles": [
+      "https://www.google.com/maps/place/?q=place_id:ChIJharborpointexample"
+    ],
+    "description": "Outboard and sterndrive repair, winterization, shrink wrap, and dry storage. Mobile service to marinas within the coverage area.",
+    "websiteUrl": "https://harborpointmarine.example",
+    "phone": "+1 401 555 0133",
+    "email": "yard@harborpointmarine.example",
+    "yearsInBusiness": 22,
+    "timeZone": "America/New_York"
+  },
+  "locations": [
+    {
+      "id": "yard",
+      "name": "Harbor Point yard",
+      "isPrimary": true,
+      "address": {
+        "street": "9 Wharf Rd",
+        "city": "Warwick",
+        "region": "RI",
+        "postalCode": "02889",
+        "country": "US"
+      },
+      "geo": {
+        "latitude": 41.7001,
+        "longitude": -71.383
+      },
+      "phone": "+1 401 555 0133",
+      "hours": {
+        "weekly": {
+          "monday": {
+            "open": "08:00",
+            "close": "16:30"
+          },
+          "tuesday": {
+            "open": "08:00",
+            "close": "16:30"
+          },
+          "wednesday": {
+            "open": "08:00",
+            "close": "16:30"
+          },
+          "thursday": {
+            "open": "08:00",
+            "close": "16:30"
+          },
+          "friday": {
+            "open": "08:00",
+            "close": "16:30"
+          },
+          "saturday": {
+            "open": "08:00",
+            "close": "12:00"
+          },
+          "sunday": "closed"
+        },
+        "exceptions": [
+          {
+            "date": "2026-11-26",
+            "status": "closed",
+            "label": "Thanksgiving"
+          }
+        ],
+        "note": "Saturday hours April through October only."
+      }
+    }
+  ],
+  "services": [
+    {
+      "slug": "outboard-repair",
+      "name": "Outboard repair",
+      "category": "engine",
+      "url": "https://harborpointmarine.example/services/engine/outboard-repair"
+    },
+    {
+      "slug": "sterndrive-service",
+      "name": "Sterndrive service",
+      "category": "engine",
+      "url": "https://harborpointmarine.example/services/engine/sterndrive-service"
+    },
+    {
+      "slug": "winterization",
+      "name": "Winterization",
+      "category": "seasonal",
+      "url": "https://harborpointmarine.example/services/seasonal/winterization",
+      "pricePresentation": "From $295 for single outboards; quoted by engine"
+    },
+    {
+      "slug": "shrink-wrap",
+      "name": "Shrink wrap",
+      "category": "seasonal",
+      "url": "https://harborpointmarine.example/services/seasonal/shrink-wrap"
+    },
+    {
+      "slug": "dry-storage",
+      "name": "Dry storage",
+      "category": "storage",
+      "url": "https://harborpointmarine.example/services/storage/dry-storage",
+      "bookable": false,
+      "description": "Seasonal storage contracts are quoted by length overall. Contact the yard."
+    },
+    {
+      "slug": "mobile-service",
+      "name": "Mobile service at your marina",
+      "category": "mobile",
+      "url": "https://harborpointmarine.example/services/mobile/mobile-service"
+    }
+  ],
+  "coverage": {
+    "radius": [
+      {
+        "locationId": "yard",
+        "miles": 30
+      }
+    ],
+    "areaNames": [
+      "Warwick",
+      "East Greenwich",
+      "Bristol",
+      "Newport",
+      "Wickford"
+    ],
+    "note": "Mobile service to marinas within 30 miles of the yard. Haul-out at the yard only."
+  },
+  "certifications": [
+    "Mercury Certified",
+    "Yamaha Master Technician",
+    "ABYC Standards Certified"
+  ],
+  "bookingPolicy": {
+    "windows": [
+      {
+        "id": "Morning"
+      },
+      {
+        "id": "Afternoon"
+      }
+    ],
+    "minimumDaysAhead": 2,
+    "maximumDaysAhead": 90,
+    "weekendRequests": "not_allowed",
+    "emergencyAvailable": false,
+    "contactMethods": [
+      "call",
+      "email"
+    ],
+    "requiresAddress": false,
+    "vehicleDetailsAccepted": true,
+    "confirmationNote": "The service manager emails or calls within one business day with a haul or visit date."
+  },
+  "bookingSemantics": "request",
+  "interfaces": {
+    "schedulePageUrl": "https://harborpointmarine.example/schedule",
+    "mcp": {
+      "url": "https://harborpointmarine.example/api/mcp",
+      "serverCardUrl": "https://harborpointmarine.example/.well-known/mcp/server-card.json"
+    },
+    "llmsTxtUrl": "https://harborpointmarine.example/llms.txt"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "open-service-profile",
+  "version": "0.1.0-draft",
+  "description": "Open Service Profile: how a local service business describes itself and accepts booking requests from AI agents. Specification, JSON Schemas, and examples.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "validate": "node scripts/validate-examples.mjs"
+  }
+}

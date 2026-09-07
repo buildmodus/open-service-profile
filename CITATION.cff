@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "Cite the versioned specification (preferred-citation). Cite this repository only for the schemas, examples, or scripts."
+type: software
+title: "Open Service Profile: specification, JSON Schemas, and examples"
+authors:
+  - name: "EasyServe LLC"
+    website: "https://easyserve.solutions"
+repository-code: "https://github.com/buildmodus/open-service-profile"
+url: "https://www.theservicemarketingguys.com/standards/open-service-profile/"
+license: MIT
+version: 0.1.0-draft
+date-released: 2026-09-07
+keywords:
+  - open-standard
+  - local-business
+  - field-service
+  - booking
+  - mcp
+  - ai-agents
+preferred-citation:
+  type: generic
+  title: "Open Service Profile v0.1 (Draft)"
+  authors:
+    - name: "The Service Marketing Guys (EasyServe LLC)"
+      website: "https://www.theservicemarketingguys.com"
+  year: 2026
+  month: 9
+  url: "https://www.theservicemarketingguys.com/standards/open-service-profile/v0.1"
+  notes: "Draft specification. Maintained by The Service Marketing Guys, an EasyServe company. Specification text CC BY 4.0."

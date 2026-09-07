@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.theservicemarketingguys.com/standards/open-service-profile/v0.1/get_business_info.output.schema.json",
+  "type": "object",
+  "required": [
+    "name",
+    "trades",
+    "serviceModel",
+    "phone",
+    "address",
+    "hours",
+    "timeZone",
+    "websiteUrls",
+    "booking",
+    "canonicalSiteUrl"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "trades": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "serviceModel": {
+      "enum": [
+        "on_site",
+        "in_shop",
+        "both"
+      ]
+    },
+    "reviewProfiles": {
+      "type": "array",
+      "items": {
+        "$ref": "tools-common.schema.json#/$defs/Url"
+      }
+    },
+    "parentOrganization": {
+      "type": "object",
+      "required": [
+        "name",
+        "url"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "$ref": "tools-common.schema.json#/$defs/Url"
+        }
+      }
+    },
+    "phone": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "email": {
+      "type": "string"
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "city": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "zip": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "hours": {
+      "type": "object"
+    },
+    "timeZone": {
+      "type": "string"
+    },
+    "licenses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "serviceAreaSummary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "address",
+          "hours",
+          "isPrimary"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "tools-common.schema.json#/$defs/Slug"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "object"
+          },
+          "phone": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "hours": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "isPrimary": {
+            "type": "boolean"
+          },
+          "url": {
+            "$ref": "tools-common.schema.json#/$defs/Url"
+          }
+        }
+      }
+    },
+    "locationsIndexUrl": {
+      "$ref": "tools-common.schema.json#/$defs/Url"
+    },
+    "websiteUrls": {
+      "type": "object",
+      "required": [
+        "canonical"
+      ],
+      "properties": {
+        "canonical": {
+          "$ref": "tools-common.schema.json#/$defs/Url"
+        },
+        "services": {
+          "$ref": "tools-common.schema.json#/$defs/Url"
+        },
+        "serviceAreas": {
+          "$ref": "tools-common.schema.json#/$defs/Url"
+        },
+        "schedule": {
+          "$ref": "tools-common.schema.json#/$defs/Url"
+        }
+      }
+    },
+    "booking": {
+      "type": "object",
+      "required": [
+        "tool",
+        "mode",
+        "userApprovalRequired",
+        "businessConfirmationRequired",
+        "minimumDaysAhead",
+        "weekendRequests",
+        "windows",
+        "contactMethods"
+      ],
+      "properties": {
+        "tool": {
+          "const": "request_service_booking"
+        },
+        "mode": {
+          "const": "request"
+        },
+        "userApprovalRequired": {
+          "const": true
+        },
+        "businessConfirmationRequired": {
+          "const": true
+        },
+        "minimumDaysAhead": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maximumDaysAhead": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "weekendRequests": {
+          "enum": [
+            "allowed",
+            "not_allowed",
+            "saturday_only"
+          ]
+        },
+        "windows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "tools-common.schema.json#/$defs/Window"
+          }
+        },
+        "contactMethods": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "call",
+              "text",
+              "email"
+            ]
+          }
+        },
+        "emergencyAvailable": {
+          "type": "boolean"
+        },
+        "afterHoursNote": {
+          "type": "string"
+        },
+        "confirmationNote": {
+          "type": "string"
+        }
+      }
+    },
+    "canonicalSiteUrl": {
+      "$ref": "tools-common.schema.json#/$defs/Url"
+    }
+  },
+  "description": "Output for the Open Service Profile v0.1 tool get_business_info."
+}

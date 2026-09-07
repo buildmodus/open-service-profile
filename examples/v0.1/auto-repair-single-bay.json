@@ -1,0 +1,156 @@
+{
+  "specVersion": "0.1",
+  "updatedAt": "2026-09-07T14:00:00Z",
+  "conformance": {
+    "level": 1
+  },
+  "business": {
+    "displayName": "Ridgeline Auto Care",
+    "trades": [
+      "AutoRepair"
+    ],
+    "serviceModel": "in_shop",
+    "reviewProfiles": [
+      "https://www.google.com/maps/place/?q=place_id:ChIJridgelineexample"
+    ],
+    "description": "Independent repair shop for domestic and Asian vehicles. Brakes, diagnostics, suspension, and scheduled maintenance.",
+    "websiteUrl": "https://ridgelineautocare.example",
+    "phone": "+1 828 555 0170",
+    "email": "shop@ridgelineautocare.example",
+    "yearsInBusiness": 6,
+    "timeZone": "America/New_York"
+  },
+  "locations": [
+    {
+      "id": "main",
+      "name": "Ridgeline Auto Care",
+      "isPrimary": true,
+      "address": {
+        "street": "415 Depot St",
+        "city": "Black Mountain",
+        "region": "NC",
+        "postalCode": "28711",
+        "country": "US"
+      },
+      "geo": {
+        "latitude": 35.6179,
+        "longitude": -82.3212
+      },
+      "hours": {
+        "weekly": {
+          "monday": {
+            "open": "08:00",
+            "close": "17:30"
+          },
+          "tuesday": {
+            "open": "08:00",
+            "close": "17:30"
+          },
+          "wednesday": {
+            "open": "08:00",
+            "close": "17:30"
+          },
+          "thursday": {
+            "open": "08:00",
+            "close": "17:30"
+          },
+          "friday": {
+            "open": "08:00",
+            "close": "17:00"
+          },
+          "saturday": "closed",
+          "sunday": "closed"
+        }
+      },
+      "acceptsWalkIns": true
+    }
+  ],
+  "services": [
+    {
+      "slug": "brake-repair",
+      "name": "Brake repair",
+      "category": "brakes",
+      "url": "https://ridgelineautocare.example/services/brakes/brake-repair"
+    },
+    {
+      "slug": "check-engine-diagnostic",
+      "name": "Check engine diagnostic",
+      "category": "diagnostics",
+      "url": "https://ridgelineautocare.example/services/diagnostics/check-engine-diagnostic",
+      "pricePresentation": "Diagnostic $120 per hour, one hour minimum"
+    },
+    {
+      "slug": "oil-change",
+      "name": "Oil change",
+      "category": "maintenance",
+      "url": "https://ridgelineautocare.example/services/maintenance/oil-change"
+    },
+    {
+      "slug": "suspension-repair",
+      "name": "Suspension repair",
+      "category": "suspension",
+      "url": "https://ridgelineautocare.example/services/suspension/suspension-repair"
+    },
+    {
+      "slug": "pre-purchase-inspection",
+      "name": "Pre-purchase inspection",
+      "category": "inspections",
+      "url": "https://ridgelineautocare.example/services/inspections/pre-purchase-inspection"
+    }
+  ],
+  "coverage": {
+    "postalCodes": [
+      "28711",
+      "28778",
+      "28805",
+      "28801",
+      "28715",
+      "28730"
+    ],
+    "areaNames": [
+      "Black Mountain",
+      "Swannanoa",
+      "East Asheville",
+      "Fairview"
+    ],
+    "note": "Customers bring vehicles to the shop. Towing referrals available for the listed areas."
+  },
+  "certifications": [
+    "ASE Certified Master Technician on staff"
+  ],
+  "bookingPolicy": {
+    "windows": [
+      {
+        "id": "drop-off-open",
+        "label": "Drop off at open (8:00)",
+        "start": "08:00",
+        "end": "08:30"
+      },
+      {
+        "id": "Morning",
+        "start": "08:30",
+        "end": "12:00"
+      },
+      {
+        "id": "Afternoon",
+        "start": "12:00",
+        "end": "17:00"
+      }
+    ],
+    "minimumDaysAhead": 1,
+    "maximumDaysAhead": 30,
+    "weekendRequests": "not_allowed",
+    "emergencyAvailable": false,
+    "contactMethods": [
+      "call",
+      "text"
+    ],
+    "requiresAddress": false,
+    "confirmationNote": "We call back the same business day to confirm a drop-off time."
+  },
+  "bookingSemantics": "request",
+  "interfaces": {
+    "schedulePageUrl": "https://ridgelineautocare.example/schedule",
+    "llmsTxtUrl": "https://ridgelineautocare.example/llms.txt"
+  }
+}

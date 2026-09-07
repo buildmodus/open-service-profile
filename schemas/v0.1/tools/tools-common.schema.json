@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.theservicemarketingguys.com/standards/open-service-profile/v0.1/tools-common.schema.json",
+  "$defs": {
+    "Slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "maxLength": 80
+    },
+    "Zip": {
+      "type": "string",
+      "pattern": "^\\d{5}$"
+    },
+    "CalendarDate": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "Url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "WindowId": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "Window": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/WindowId"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "start": {
+          "type": "string",
+          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+        },
+        "end": {
+          "type": "string",
+          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+        }
+      }
+    },
+    "ErrorResult": {
+      "type": "object",
+      "required": [
+        "error",
+        "message"
+      ],
+      "properties": {
+        "error": {
+          "type": "string",
+          "pattern": "^[a-z_]+$"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "canonicalSiteUrl": {
+          "$ref": "#/$defs/Url"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LocationRef": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Slug"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "description": "Shared definitions for Open Service Profile v0.1 tool schemas."
+}

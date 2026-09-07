@@ -1,0 +1,250 @@
+{
+  "specVersion": "0.1",
+  "updatedAt": "2026-09-07T14:00:00Z",
+  "conformance": {
+    "level": 3
+  },
+  "business": {
+    "displayName": "Palmetto Air & Heat",
+    "legalName": "Palmetto Air and Heat LLC",
+    "trades": [
+      "HVACBusiness"
+    ],
+    "serviceModel": "on_site",
+    "reviewProfiles": [
+      "https://www.google.com/maps/place/?q=place_id:ChIJpalmettoexample",
+      "https://www.yelp.com/biz/palmetto-air-and-heat-daytona-beach"
+    ],
+    "description": "Residential and light commercial heating and cooling repair, maintenance, and replacement across Volusia and Flagler counties since 2009.",
+    "websiteUrl": "https://palmettoairheat.example",
+    "phone": "+1 386 555 0142",
+    "email": "service@palmettoairheat.example",
+    "yearsInBusiness": 17,
+    "timeZone": "America/New_York"
+  },
+  "locations": [
+    {
+      "id": "daytona",
+      "name": "Daytona Beach",
+      "isPrimary": true,
+      "address": {
+        "street": "1200 Industrial Dr",
+        "city": "Daytona Beach",
+        "region": "FL",
+        "postalCode": "32114",
+        "country": "US"
+      },
+      "geo": {
+        "latitude": 29.2108,
+        "longitude": -81.0228
+      },
+      "phone": "+1 386 555 0142",
+      "hours": {
+        "weekly": {
+          "monday": {
+            "open": "07:30",
+            "close": "18:00"
+          },
+          "tuesday": {
+            "open": "07:30",
+            "close": "18:00"
+          },
+          "wednesday": {
+            "open": "07:30",
+            "close": "18:00"
+          },
+          "thursday": {
+            "open": "07:30",
+            "close": "18:00"
+          },
+          "friday": {
+            "open": "07:30",
+            "close": "18:00"
+          },
+          "saturday": {
+            "open": "08:00",
+            "close": "13:00"
+          },
+          "sunday": "closed"
+        },
+        "exceptions": [
+          {
+            "date": "2026-11-26",
+            "status": "closed",
+            "label": "Thanksgiving"
+          },
+          {
+            "date": "2026-12-25",
+            "status": "closed",
+            "label": "Christmas Day"
+          }
+        ],
+        "note": "Emergency line answered around the clock."
+      },
+      "pageUrl": "https://palmettoairheat.example/locations/daytona-beach-fl"
+    },
+    {
+      "id": "palm-coast",
+      "name": "Palm Coast",
+      "isPrimary": false,
+      "address": {
+        "street": "88 Commerce Pkwy",
+        "city": "Palm Coast",
+        "region": "FL",
+        "postalCode": "32164",
+        "country": "US"
+      },
+      "geo": {
+        "latitude": 29.555,
+        "longitude": -81.2134
+      },
+      "phone": "+1 386 555 0188",
+      "hours": {
+        "weekly": {
+          "monday": {
+            "open": "08:00",
+            "close": "17:00"
+          },
+          "tuesday": {
+            "open": "08:00",
+            "close": "17:00"
+          },
+          "wednesday": {
+            "open": "08:00",
+            "close": "17:00"
+          },
+          "thursday": {
+            "open": "08:00",
+            "close": "17:00"
+          },
+          "friday": {
+            "open": "08:00",
+            "close": "17:00"
+          },
+          "saturday": "closed",
+          "sunday": "closed"
+        }
+      },
+      "pageUrl": "https://palmettoairheat.example/locations/palm-coast-fl"
+    }
+  ],
+  "services": [
+    {
+      "slug": "ac-repair",
+      "name": "AC repair",
+      "category": "cooling",
+      "url": "https://palmettoairheat.example/services/cooling/ac-repair",
+      "pricePresentation": "Diagnostic $89, applied to the repair"
+    },
+    {
+      "slug": "ac-maintenance",
+      "name": "AC maintenance",
+      "category": "cooling",
+      "url": "https://palmettoairheat.example/services/cooling/ac-maintenance"
+    },
+    {
+      "slug": "heat-pump-repair",
+      "name": "Heat pump repair",
+      "category": "heating",
+      "url": "https://palmettoairheat.example/services/heating/heat-pump-repair"
+    },
+    {
+      "slug": "system-replacement",
+      "name": "System replacement",
+      "category": "installation",
+      "url": "https://palmettoairheat.example/services/installation/system-replacement",
+      "bookable": false,
+      "description": "Replacement quotes start with an in-home assessment. Request a quote visit through the contact page or by phone."
+    },
+    {
+      "slug": "duct-cleaning",
+      "name": "Duct cleaning",
+      "category": "air-quality",
+      "url": "https://palmettoairheat.example/services/air-quality/duct-cleaning",
+      "locationIds": [
+        "daytona"
+      ]
+    }
+  ],
+  "coverage": {
+    "postalCodes": [
+      "32114",
+      "32117",
+      "32118",
+      "32119",
+      "32124",
+      "32127",
+      "32128",
+      "32129",
+      "32164",
+      "32137",
+      "32136",
+      "32174",
+      "32176"
+    ],
+    "radius": [
+      {
+        "locationId": "daytona",
+        "miles": 25
+      },
+      {
+        "locationId": "palm-coast",
+        "miles": 20
+      }
+    ],
+    "areaNames": [
+      "Daytona Beach",
+      "Ormond Beach",
+      "Port Orange",
+      "Palm Coast",
+      "Flagler Beach"
+    ],
+    "note": "Commercial refrigeration outside these areas by arrangement."
+  },
+  "certifications": [
+    "Florida CAC1819999",
+    "NATE certified technicians",
+    "EPA 608 Universal"
+  ],
+  "bookingPolicy": {
+    "windows": [
+      {
+        "id": "Morning",
+        "start": "08:00",
+        "end": "12:00"
+      },
+      {
+        "id": "Afternoon",
+        "start": "12:00",
+        "end": "17:00"
+      }
+    ],
+    "minimumDaysAhead": 1,
+    "maximumDaysAhead": 45,
+    "weekendRequests": "saturday_only",
+    "emergencyAvailable": true,
+    "afterHoursNote": "Emergency line answered around the clock. An after-hours dispatch fee applies and is quoted when you call.",
+    "contactMethods": [
+      "call",
+      "text",
+      "email"
+    ],
+    "requiresAddress": true,
+    "confirmationNote": "Our office calls or texts within one business hour to confirm the arrival window."
+  },
+  "bookingSemantics": "request",
+  "interfaces": {
+    "schedulePageUrl": "https://palmettoairheat.example/schedule",
+    "mcp": {
+      "url": "https://palmettoairheat.example/api/mcp",
+      "serverCardUrl": "https://palmettoairheat.example/.well-known/mcp/server-card.json"
+    },
+    "rest": {
+      "baseUrl": "https://palmettoairheat.example/api",
+      "openApiUrl": "https://palmettoairheat.example/api/openapi.json"
+    },
+    "webMcp": true,
+    "llmsTxtUrl": "https://palmettoairheat.example/llms.txt",
+    "agentSkillsUrl": "https://palmettoairheat.example/.well-known/agent-skills/index.json"
+  }
+}
