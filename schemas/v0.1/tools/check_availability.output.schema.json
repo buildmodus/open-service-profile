@@ -71,7 +71,23 @@
               "windows": {
                 "type": "array",
                 "items": {
-                  "$ref": "tools-common.schema.json#/$defs/WindowId"
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "status"
+                  ],
+                  "properties": {
+                    "id": {
+                      "$ref": "tools-common.schema.json#/$defs/WindowId"
+                    },
+                    "status": {
+                      "enum": [
+                        "requestable",
+                        "available",
+                        "closed"
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -81,23 +97,47 @@
           "$ref": "tools-common.schema.json#/$defs/Url"
         }
       },
-      "if": {
-        "properties": {
-          "source": {
-            "const": "policy"
-          }
-        }
-      },
-      "then": {
-        "required": [
-          "sourceNote"
-        ]
-      },
       "not": {
         "required": [
           "error"
         ]
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "policy"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "sourceNote"
+            ],
+            "properties": {
+              "days": {
+                "items": {
+                  "properties": {
+                    "windows": {
+                      "items": {
+                        "properties": {
+                          "status": {
+                            "enum": [
+                              "requestable",
+                              "closed"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     {
       "allOf": [

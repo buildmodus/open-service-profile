@@ -25,7 +25,8 @@
             "location",
             "radius",
             "in_shop",
-            "none"
+            "none",
+            "unknown"
           ]
         },
         "phone": {
@@ -65,7 +66,10 @@
           "else": {
             "properties": {
               "matchedBy": {
-                "const": "none"
+                "enum": [
+                  "none",
+                  "unknown"
+                ]
               }
             }
           }
@@ -92,7 +96,10 @@
           "if": {
             "properties": {
               "matchedBy": {
-                "const": "in_shop"
+                "enum": [
+                  "in_shop",
+                  "unknown"
+                ]
               }
             }
           },

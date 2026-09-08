@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.0-draft.3, 2026-09-07
+
+Corrections from an outside review checked against sources. No new tools.
+
+- Prior-art table rewritten: schema.org `Service` already carries `areaServed`, `hoursAvailable`, and `availableChannel`, and `ReservationPending` expresses an unconfirmed request; Reserve with Google supports asynchronous merchant confirmation but requires real-time slot inventory; UCP added lodging and food in 2026; Local Service MCP (Lokuli / BookingClaw) added as the marketplace counterpart; the MCP server card convention is still a working-group draft.
+- Section 4.3 labels the server card shape an OSP convention, to be replaced by the MCP Server Card format when published.
+- Section 2.1 states OSP claims correctness for agents, not search visibility, subject to the published interoperability experiment.
+- `check_coverage`: `matchedBy: "unknown"` distinguishes not evaluated (radius published, not evaluated) from not covered (`none`); six-step evaluation order.
+- `check_availability`: each window carries `status` `requestable`, `available`, or `closed`; policy mode never emits `available`; agents describe requestable windows as accepting requests. Terminology gains requestable and available windows.
+- Level 1 shrinks to the manifest plus one business node with one `ScheduleAction`; OfferCatalog and per-service actions are SHOULD.
+- Level 2 core is `get_business_info`, `list_services`, `check_coverage`; `get_reviews` and the server card are SHOULD; `interfaces.mcp.serverCardUrl` is optional in the manifest schema.
+
 ## 0.1.0-draft.2, 2026-09-07
 
 Corrections from cross-family review of the first draft. No new tools.
