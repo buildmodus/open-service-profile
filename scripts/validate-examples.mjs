@@ -1,11 +1,13 @@
 // Validates every example manifest in examples/v0.1/ against schemas/v0.1/manifest.schema.json
 // and the ten constraints listed after Appendix A of the specification.
 // No dependencies. Supports the JSON Schema 2020-12 subset the manifest schema uses:
-// type, required, properties, additionalProperties (boolean), propertyNames, enum, const,
-// pattern, minLength, maxLength, minimum, maximum, items, minItems, maxItems, uniqueItems,
-// $ref (local #/$defs and sibling files by relative path), if/then/else, oneOf, anyOf, allOf,
-// not, and the formats date-time, email, uri.
-// Run: node scripts/validate-examples.mjs
+// type, required, properties, additionalProperties (boolean or schema), propertyNames, enum, const,
+// pattern, minLength, maxLength, minimum, maximum, exclusiveMinimum, exclusiveMaximum, items,
+// minItems, maxItems, uniqueItems, contains, minContains, maxContains, $ref (local #/$defs and
+// sibling files by relative path), if/then/else, oneOf, anyOf, allOf, not, and the formats
+// date (real calendar date), date-time (real calendar date and time), email, uri.
+// Run: node scripts/validate-examples.mjs            validates every examples/v0.1/*.json
+//      node scripts/validate-examples.mjs a.json b.json   validates the given manifest files
 import { readFileSync, readdirSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 
@@ -27,10 +29,41 @@ function loadRef(ref, baseFile) {
 }
 
 const typeOf = v => v === null ? 'null' : Array.isArray(v) ? 'array' : Number.isInteger(v) ? 'integer' : typeof v
+
+// A calendar date exists when constructing it in UTC round-trips every component.
+function realDate(y, m, d) {
+  const dt = new Date(Date.UTC(y, m - 1, d))
+  return dt.getUTCFullYear() === y && dt.getUTCMonth() === m - 1 && dt.getUTCDate() === d
+}
 const formats = {
-  'date-time': v => !Number.isNaN(Date.parse(v)) && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/.test(v),
-  email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-  uri: v => { try { new URL(v); return true } catch { return false } },
+  date: v => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v)
+    return Boolean(m) && realDate(+m[1], +m[2], +m[3])
+  },
+  'date-time': v => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/.exec(v)
+    if (!m) return false
+    if (!realDate(+m[1], +m[2], +m[3])) return false
+    const hh = +m[4], mm = +m[5], ss = m[6] === undefined ? 0 : +m[6]
+    if (hh > 23 || mm > 59 || ss > 60) return false
+    if (m[7] !== 'Z') { const [oh, om] = m[7].slice(1).split(':').map(Number); if (oh > 23 || om > 59) return false }
+    return true
+  },
+  // One @, a local part without consecutive dots or leading/trailing dot, a dotted domain with a
+  // letters-only TLD of at least two characters.
+  email: v => {
+    if ((v.match(/@/g) || []).length !== 1) return false
+    const [local, domain] = v.split('@')
+    if (!local || !domain || local.length > 64 || /\.\./.test(v) || /^\.|\.$/.test(local)) return false
+    if (!/^[A-Za-z0-9!#$%&'*+/=?^_`{|}~.-]+$/.test(local)) return false
+    return /^(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/.test(domain)
+  },
+  // Parses as a URL, has a scheme, and every percent sign starts a valid two-hex-digit escape.
+  uri: v => {
+    if (/%(?![0-9A-Fa-f]{2})/.test(v)) return false
+    if (!/^[A-Za-z][A-Za-z0-9+.-]*:/.test(v)) return false
+    try { new URL(v); return true } catch { return false }
+  },
 }
 
 function validate(schema, value, path, file, errors) {
@@ -57,12 +90,20 @@ function validate(schema, value, path, file, errors) {
   if (t === 'integer' || t === 'number') {
     if (schema.minimum !== undefined && value < schema.minimum) errors.push(`${path}: below ${schema.minimum}`)
     if (schema.maximum !== undefined && value > schema.maximum) errors.push(`${path}: above ${schema.maximum}`)
+    if (schema.exclusiveMinimum !== undefined && value <= schema.exclusiveMinimum) errors.push(`${path}: not above ${schema.exclusiveMinimum}`)
+    if (schema.exclusiveMaximum !== undefined && value >= schema.exclusiveMaximum) errors.push(`${path}: not below ${schema.exclusiveMaximum}`)
   }
   if (t === 'array') {
     if (schema.minItems !== undefined && value.length < schema.minItems) errors.push(`${path}: fewer than ${schema.minItems} items`)
     if (schema.maxItems !== undefined && value.length > schema.maxItems) errors.push(`${path}: more than ${schema.maxItems} items`)
     if (schema.uniqueItems && new Set(value.map(v => JSON.stringify(v))).size !== value.length) errors.push(`${path}: items not unique`)
     if (schema.items) value.forEach((v, i) => validate(schema.items, v, `${path}[${i}]`, file, errors))
+    if (schema.contains !== undefined) {
+      const hits = value.filter(v => { const e = []; validate(schema.contains, v, path, file, e); return e.length === 0 }).length
+      const min = schema.minContains ?? 1
+      if (hits < min) errors.push(`${path}: contains matched ${hits} item(s), fewer than ${min}`)
+      if (schema.maxContains !== undefined && hits > schema.maxContains) errors.push(`${path}: contains matched ${hits} item(s), more than ${schema.maxContains}`)
+    }
   }
   if (t === 'object') {
     for (const k of schema.required || []) if (!(k in value)) errors.push(`${path}: missing required ${k}`)
@@ -81,7 +122,15 @@ function validate(schema, value, path, file, errors) {
   }
   if (schema.allOf) schema.allOf.forEach(s => validate(s, value, path, file, errors))
   if (schema.anyOf && !schema.anyOf.some(passes)) errors.push(`${path}: matches none of anyOf`)
-  if (schema.oneOf && schema.oneOf.filter(passes).length !== 1) errors.push(`${path}: must match exactly one of oneOf`)
+  if (schema.oneOf) {
+    const results = schema.oneOf.map(s => { const e = []; validate(s, value, path, file, e); return e })
+    const matched = results.filter(e => e.length === 0).length
+    if (matched !== 1) {
+      errors.push(`${path}: must match exactly one of oneOf (matched ${matched})`)
+      // When nothing matched, surface the nearest branch's own errors so the cause is visible.
+      if (matched === 0) results.slice().sort((a, b) => a.length - b.length)[0].forEach(e => errors.push(`  nearest branch: ${e}`))
+    }
+  }
   if (schema.not && passes(schema.not)) errors.push(`${path}: must not match schema`)
 }
 
@@ -109,14 +158,19 @@ function constraints(m, errors) {
 }
 
 const dir = resolve(root, 'examples/v0.1')
+const args = process.argv.slice(2)
+const files = args.length
+  ? args.map(a => resolve(process.cwd(), a))
+  : readdirSync(dir).filter(f => f.endsWith('.json')).sort().map(f => resolve(dir, f))
 let failed = 0
-for (const name of readdirSync(dir).filter(f => f.endsWith('.json')).sort()) {
-  const manifest = JSON.parse(readFileSync(resolve(dir, name), 'utf8'))
+for (const file of files) {
+  const name = args.length ? file : file.slice(dir.length + 1)
+  const manifest = JSON.parse(readFileSync(file, 'utf8'))
   const errors = []
   validate(rootSchema, manifest, '$', schemaPath, errors)
   constraints(manifest, errors)
   if (errors.length) { failed++; console.log(`FAIL ${name}`); errors.forEach(e => console.log(`  ${e}`)) }
   else console.log(`ok   ${name}`)
 }
-if (failed) { console.log(`${failed} example(s) failed`); process.exit(1) }
-console.log('all examples valid against schemas/v0.1/manifest.schema.json plus the Appendix A constraints')
+if (failed) { console.log(`${failed} manifest(s) failed`); process.exit(1) }
+console.log(`${files.length} manifest(s) valid against schemas/v0.1/manifest.schema.json plus the Appendix A constraints`)

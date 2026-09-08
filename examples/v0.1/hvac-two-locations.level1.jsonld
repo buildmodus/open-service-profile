@@ -1,0 +1,241 @@
+{
+  "@context": "https://schema.org",
+  "@type": "HVACBusiness",
+  "@id": "https://palmettoairheat.example/#business",
+  "name": "Palmetto Air & Heat",
+  "legalName": "Palmetto Air and Heat LLC",
+  "url": "https://palmettoairheat.example",
+  "telephone": "+1 386 555 0142",
+  "email": "service@palmettoairheat.example",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1200 Industrial Dr",
+    "addressLocality": "Daytona Beach",
+    "addressRegion": "FL",
+    "postalCode": "32114",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 29.2108,
+    "longitude": -81.0228
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "07:30",
+      "closes": "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "08:00",
+      "closes": "13:00"
+    }
+  ],
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Daytona Beach"
+    },
+    {
+      "@type": "City",
+      "name": "Ormond Beach"
+    },
+    {
+      "@type": "City",
+      "name": "Port Orange"
+    },
+    {
+      "@type": "City",
+      "name": "Palm Coast"
+    },
+    {
+      "@type": "City",
+      "name": "Flagler Beach"
+    }
+  ],
+  "sameAs": [
+    "https://www.google.com/maps/place/?q=place_id:ChIJpalmettoexample",
+    "https://www.yelp.com/biz/palmetto-air-and-heat-daytona-beach"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "@id": "https://palmettoairheat.example/services/cooling/ac-repair#service",
+          "name": "AC repair",
+          "url": "https://palmettoairheat.example/services/cooling/ac-repair",
+          "provider": {
+            "@id": "https://palmettoairheat.example/#business"
+          },
+          "potentialAction": {
+            "@type": "ScheduleAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://palmettoairheat.example/schedule?service=ac-repair",
+              "inLanguage": "en-US",
+              "actionPlatform": [
+                "http://schema.org/DesktopWebPlatform",
+                "http://schema.org/MobileWebPlatform"
+              ]
+            },
+            "result": {
+              "@type": "Reservation",
+              "reservationStatus": "https://schema.org/ReservationPending",
+              "name": "Service appointment request"
+            }
+          }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "@id": "https://palmettoairheat.example/services/cooling/ac-maintenance#service",
+          "name": "AC maintenance",
+          "url": "https://palmettoairheat.example/services/cooling/ac-maintenance",
+          "provider": {
+            "@id": "https://palmettoairheat.example/#business"
+          },
+          "potentialAction": {
+            "@type": "ScheduleAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://palmettoairheat.example/schedule?service=ac-maintenance",
+              "inLanguage": "en-US",
+              "actionPlatform": [
+                "http://schema.org/DesktopWebPlatform",
+                "http://schema.org/MobileWebPlatform"
+              ]
+            },
+            "result": {
+              "@type": "Reservation",
+              "reservationStatus": "https://schema.org/ReservationPending",
+              "name": "Service appointment request"
+            }
+          }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "@id": "https://palmettoairheat.example/services/heating/heat-pump-repair#service",
+          "name": "Heat pump repair",
+          "url": "https://palmettoairheat.example/services/heating/heat-pump-repair",
+          "provider": {
+            "@id": "https://palmettoairheat.example/#business"
+          },
+          "potentialAction": {
+            "@type": "ScheduleAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://palmettoairheat.example/schedule?service=heat-pump-repair",
+              "inLanguage": "en-US",
+              "actionPlatform": [
+                "http://schema.org/DesktopWebPlatform",
+                "http://schema.org/MobileWebPlatform"
+              ]
+            },
+            "result": {
+              "@type": "Reservation",
+              "reservationStatus": "https://schema.org/ReservationPending",
+              "name": "Service appointment request"
+            }
+          }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "@id": "https://palmettoairheat.example/services/installation/system-replacement#service",
+          "name": "System replacement",
+          "url": "https://palmettoairheat.example/services/installation/system-replacement",
+          "provider": {
+            "@id": "https://palmettoairheat.example/#business"
+          },
+          "potentialAction": {
+            "@type": "ScheduleAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://palmettoairheat.example/contact?topic=system-replacement",
+              "inLanguage": "en-US",
+              "actionPlatform": [
+                "http://schema.org/DesktopWebPlatform",
+                "http://schema.org/MobileWebPlatform"
+              ]
+            },
+            "result": {
+              "@type": "Reservation",
+              "reservationStatus": "https://schema.org/ReservationPending",
+              "name": "Service appointment request"
+            }
+          }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "@id": "https://palmettoairheat.example/services/air-quality/duct-cleaning#service",
+          "name": "Duct cleaning",
+          "url": "https://palmettoairheat.example/services/air-quality/duct-cleaning",
+          "provider": {
+            "@id": "https://palmettoairheat.example/#business"
+          },
+          "potentialAction": {
+            "@type": "ScheduleAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://palmettoairheat.example/schedule?service=duct-cleaning",
+              "inLanguage": "en-US",
+              "actionPlatform": [
+                "http://schema.org/DesktopWebPlatform",
+                "http://schema.org/MobileWebPlatform"
+              ]
+            },
+            "result": {
+              "@type": "Reservation",
+              "reservationStatus": "https://schema.org/ReservationPending",
+              "name": "Service appointment request"
+            }
+          },
+          "areaServed": {
+            "@type": "Place",
+            "name": "Daytona Beach location only"
+          }
+        }
+      }
+    ]
+  },
+  "potentialAction": {
+    "@type": "ScheduleAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://palmettoairheat.example/schedule",
+      "inLanguage": "en-US",
+      "actionPlatform": [
+        "http://schema.org/DesktopWebPlatform",
+        "http://schema.org/MobileWebPlatform"
+      ]
+    },
+    "result": {
+      "@type": "Reservation",
+      "reservationStatus": "https://schema.org/ReservationPending",
+      "name": "Service appointment request"
+    }
+  }
+}

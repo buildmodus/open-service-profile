@@ -84,6 +84,7 @@
         },
         "vehicle": {
           "type": "object",
+          "description": "Accepted when the business serviceModel is in_shop, or both with vehicleDetailsAccepted true; otherwise ignored by the server without error. See section 5.2.",
           "properties": {
             "year": {
               "type": "string",

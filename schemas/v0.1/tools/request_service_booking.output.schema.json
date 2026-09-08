@@ -1,85 +1,159 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://www.theservicemarketingguys.com/standards/open-service-profile/v0.1/request_service_booking.output.schema.json",
-  "type": "object",
-  "required": [
-    "success",
-    "requestId",
-    "duplicate",
-    "status",
-    "appointmentConfirmed",
-    "service",
-    "preferredDate",
-    "message",
-    "canonicalSiteUrl"
-  ],
-  "properties": {
-    "success": {
-      "const": true
-    },
-    "requestId": {
-      "type": "string",
-      "format": "uuid"
-    },
-    "duplicate": {
-      "type": "boolean"
-    },
-    "code": {
-      "enum": [
-        "duplicate_request"
-      ]
-    },
-    "status": {
-      "const": "pending_business_confirmation"
-    },
-    "appointmentConfirmed": {
-      "const": false
-    },
-    "service": {
+  "oneOf": [
+    {
       "type": "object",
       "required": [
-        "slug",
-        "name"
+        "success",
+        "requestId",
+        "duplicate",
+        "status",
+        "appointmentConfirmed",
+        "service",
+        "preferredDate",
+        "message",
+        "canonicalSiteUrl"
       ],
       "properties": {
-        "slug": {
-          "$ref": "tools-common.schema.json#/$defs/Slug"
+        "success": {
+          "const": true
         },
-        "name": {
+        "requestId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "duplicate": {
+          "type": "boolean"
+        },
+        "code": {
+          "enum": [
+            "duplicate_request"
+          ]
+        },
+        "status": {
+          "const": "pending_business_confirmation"
+        },
+        "appointmentConfirmed": {
+          "const": false
+        },
+        "service": {
+          "type": "object",
+          "required": [
+            "slug",
+            "name"
+          ],
+          "properties": {
+            "slug": {
+              "$ref": "tools-common.schema.json#/$defs/Slug"
+            },
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "$ref": "tools-common.schema.json#/$defs/Url"
+            }
+          }
+        },
+        "preferredDate": {
+          "$ref": "tools-common.schema.json#/$defs/CalendarDate"
+        },
+        "preferredTime": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "location": {
+          "$ref": "tools-common.schema.json#/$defs/LocationRef"
+        },
+        "coverageVerified": {
+          "type": "boolean"
+        },
+        "schedulingRecordCreated": {
+          "type": "boolean"
+        },
+        "confirmationNote": {
           "type": "string"
         },
-        "url": {
+        "message": {
+          "type": "string"
+        },
+        "canonicalSiteUrl": {
           "$ref": "tools-common.schema.json#/$defs/Url"
         }
+      },
+      "not": {
+        "required": [
+          "error"
+        ]
       }
     },
-    "preferredDate": {
-      "$ref": "tools-common.schema.json#/$defs/CalendarDate"
-    },
-    "preferredTime": {
-      "type": [
-        "string",
-        "null"
+    {
+      "allOf": [
+        {
+          "$ref": "tools-common.schema.json#/$defs/ErrorResult"
+        },
+        {
+          "properties": {
+            "error": {
+              "enum": [
+                "invalid_input",
+                "unknown_service",
+                "invalid_date",
+                "date_too_soon",
+                "date_too_far",
+                "weekend_unavailable",
+                "closed_day",
+                "unknown_window",
+                "location_required",
+                "unknown_location",
+                "ambiguous_location",
+                "contact_method_unavailable",
+                "address_required",
+                "missing_provenance",
+                "rate_limited",
+                "booking_request_failed"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "enum": [
+                  "location_required",
+                  "unknown_location",
+                  "ambiguous_location"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "locations"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "enum": [
+                  "date_too_soon"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "minimumDaysAhead"
+            ]
+          }
+        }
       ]
-    },
-    "location": {
-      "$ref": "tools-common.schema.json#/$defs/LocationRef"
-    },
-    "coverageVerified": {
-      "type": "boolean"
-    },
-    "schedulingRecordCreated": {
-      "type": "boolean"
-    },
-    "confirmationNote": {
-      "type": "string"
-    },
-    "message": {
-      "type": "string"
-    },
-    "canonicalSiteUrl": {
-      "$ref": "tools-common.schema.json#/$defs/Url"
     }
-  },
-  "description": "Success output for the Open Service Profile v0.1 tool request_service_booking. Errors use tools-common.schema.json#/$defs/ErrorResult."
+  ],
+  "description": "Output for the Open Service Profile v0.1 tool request_service_booking: oneOf the success shape or an ErrorResult constrained to this tool's error codes."
 }

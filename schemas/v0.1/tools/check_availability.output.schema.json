@@ -1,95 +1,142 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://www.theservicemarketingguys.com/standards/open-service-profile/v0.1/check_availability.output.schema.json",
-  "type": "object",
-  "required": [
-    "source",
-    "serviceSlug",
-    "timeZone",
-    "windowDefinitions",
-    "days",
-    "canonicalSiteUrl"
-  ],
-  "properties": {
-    "source": {
-      "enum": [
-        "policy",
-        "calendar"
-      ]
-    },
-    "windowDefinitions": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "$ref": "tools-common.schema.json#/$defs/Window"
-      }
-    },
-    "sourceNote": {
-      "type": "string",
-      "maxLength": 300
-    },
-    "serviceSlug": {
-      "$ref": "tools-common.schema.json#/$defs/Slug"
-    },
-    "location": {
-      "$ref": "tools-common.schema.json#/$defs/LocationRef"
-    },
-    "timeZone": {
-      "type": "string"
-    },
-    "days": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": [
-          "date",
-          "status",
-          "windows"
-        ],
-        "properties": {
-          "date": {
-            "$ref": "tools-common.schema.json#/$defs/CalendarDate"
-          },
-          "status": {
-            "enum": [
-              "open",
-              "closed"
-            ]
-          },
-          "reason": {
-            "enum": [
-              "closed_day",
-              "exception_closed",
-              "weekend_requests_not_allowed",
-              "outside_booking_range",
-              "service_not_offered_at_location",
-              "calendar_full"
-            ]
-          },
-          "windows": {
-            "type": "array",
-            "items": {
-              "$ref": "tools-common.schema.json#/$defs/WindowId"
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "source",
+        "serviceSlug",
+        "timeZone",
+        "windowDefinitions",
+        "days",
+        "canonicalSiteUrl"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "policy",
+            "calendar"
+          ]
+        },
+        "windowDefinitions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "tools-common.schema.json#/$defs/Window"
+          }
+        },
+        "sourceNote": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "serviceSlug": {
+          "$ref": "tools-common.schema.json#/$defs/Slug"
+        },
+        "location": {
+          "$ref": "tools-common.schema.json#/$defs/LocationRef"
+        },
+        "timeZone": {
+          "type": "string"
+        },
+        "days": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "date",
+              "status",
+              "windows"
+            ],
+            "properties": {
+              "date": {
+                "$ref": "tools-common.schema.json#/$defs/CalendarDate"
+              },
+              "status": {
+                "enum": [
+                  "open",
+                  "closed"
+                ]
+              },
+              "reason": {
+                "enum": [
+                  "closed_day",
+                  "exception_closed",
+                  "weekend_requests_not_allowed",
+                  "outside_booking_range",
+                  "service_not_offered_at_location",
+                  "calendar_full"
+                ]
+              },
+              "windows": {
+                "type": "array",
+                "items": {
+                  "$ref": "tools-common.schema.json#/$defs/WindowId"
+                }
+              }
             }
           }
+        },
+        "canonicalSiteUrl": {
+          "$ref": "tools-common.schema.json#/$defs/Url"
         }
+      },
+      "if": {
+        "properties": {
+          "source": {
+            "const": "policy"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "sourceNote"
+        ]
+      },
+      "not": {
+        "required": [
+          "error"
+        ]
       }
     },
-    "canonicalSiteUrl": {
-      "$ref": "tools-common.schema.json#/$defs/Url"
+    {
+      "allOf": [
+        {
+          "$ref": "tools-common.schema.json#/$defs/ErrorResult"
+        },
+        {
+          "properties": {
+            "error": {
+              "enum": [
+                "invalid_input",
+                "unknown_service",
+                "unknown_location",
+                "location_required",
+                "invalid_range",
+                "rate_limited"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "enum": [
+                  "unknown_location",
+                  "location_required"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "locations"
+            ]
+          }
+        }
+      ]
     }
-  },
-  "if": {
-    "properties": {
-      "source": {
-        "const": "policy"
-      }
-    }
-  },
-  "then": {
-    "required": [
-      "sourceNote"
-    ]
-  },
-  "description": "Output for the Open Service Profile v0.1 tool check_availability."
+  ],
+  "description": "Output for the Open Service Profile v0.1 tool check_availability: oneOf the success shape or an ErrorResult constrained to this tool's error codes."
 }

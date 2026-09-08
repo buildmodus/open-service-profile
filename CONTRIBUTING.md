@@ -16,11 +16,18 @@ Anyone may propose. The Service Marketing Guys, as maintainer, reviews proposals
 
 ## How changes ship
 
-- Releases are versioned. The specification text at a versioned URL never changes after release, apart from typographical corrections that do not alter meaning.
-- Before 1.0, breaking changes land only in a new minor version (0.2, 0.3). Non-breaking additions may land in a patch.
-- After 1.0, breaking changes land only in a new major version.
-- Every release has an entry in `CHANGELOG.md` and a versioned URL on the maintainer's site.
-- A field or tool is deprecated in one release before it is removed in a later one.
+This section mirrors section 9 of the specification word for word; where they differ, the specification governs.
+
+- OSP uses semantic versioning. `specVersion` in the manifest is `MAJOR.MINOR`.
+- A PATCH release corrects text only. It does not change schemas.
+- A MINOR release MAY add optional fields, tool output fields, enumeration values, and error codes. Consumers MUST ignore unknown fields.
+- Before 1.0, a MINOR release MAY contain breaking changes and MUST list each one in the changelog with a migration note.
+- After 1.0, breaking changes ship only in a MAJOR release.
+- A deprecated construct keeps working for the prior MINOR for at least six months after the release that deprecates it.
+- `bookingSemantics` values beyond `request` are a breaking change and follow the rules above.
+- Each release publishes a changelog in this document and a tagged release in the repository.
+- Proposals, issues, and discussion happen in the GitHub issue tracker at the repository URL. The maintainer decides; decisions are recorded in the changelog with their issue links.
+- This document's canonical URL is versioned. `/standards/open-service-profile/latest` redirects to the newest release.
 
 ## Implementation reports
 

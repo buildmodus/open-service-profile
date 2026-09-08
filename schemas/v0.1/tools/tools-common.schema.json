@@ -23,6 +23,10 @@
       "type": "string",
       "maxLength": 40
     },
+    "Time": {
+      "type": "string",
+      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+    },
     "Window": {
       "type": "object",
       "required": [
@@ -30,20 +34,53 @@
       ],
       "properties": {
         "id": {
-          "$ref": "#/$defs/WindowId"
+          "type": "string",
+          "anyOf": [
+            {
+              "enum": [
+                "Morning",
+                "Afternoon",
+                "Evening"
+              ]
+            },
+            {
+              "pattern": "^[a-z0-9][a-z0-9-]*$",
+              "maxLength": 40
+            }
+          ]
         },
         "label": {
           "type": "string",
+          "minLength": 1,
           "maxLength": 40
         },
         "start": {
-          "type": "string",
-          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+          "$ref": "#/$defs/Time"
         },
         "end": {
-          "type": "string",
-          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+          "$ref": "#/$defs/Time"
         }
+      },
+      "if": {
+        "properties": {
+          "id": {
+            "not": {
+              "enum": [
+                "Morning",
+                "Afternoon",
+                "Evening"
+              ]
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "id",
+          "label",
+          "start",
+          "end"
+        ]
       }
     },
     "ErrorResult": {
@@ -61,11 +98,41 @@
           "type": "string",
           "maxLength": 500
         },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "maxLength": 120
+          }
+        },
+        "minimumDaysAhead": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LocationRef"
+          }
+        },
         "canonicalSiteUrl": {
           "$ref": "#/$defs/Url"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "if": {
+        "properties": {
+          "error": {
+            "const": "invalid_input"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "fields"
+        ]
+      }
     },
     "LocationRef": {
       "type": "object",

@@ -6,7 +6,7 @@ It covers dispatch-based and shop-based trades: HVAC, plumbing, electrical, land
 
 ## Status
 
-Draft v0.1, published 2026-09-07. The draft is stable enough to implement. Changes before 1.0 arrive as versioned releases with a changelog; see [CONTRIBUTING.md](CONTRIBUTING.md) for how changes are decided.
+Draft v0.1, published 2026-09-07 and revised the same day (0.1.0-draft.2). The draft is stable enough to implement. Changes before 1.0 arrive as versioned releases with a changelog; see [CONTRIBUTING.md](CONTRIBUTING.md) for how changes are decided.
 
 ## Specification
 
@@ -34,12 +34,13 @@ examples/v0.1/
   hvac-two-locations.json         Appendix C.1
   auto-repair-single-bay.json     Appendix C.2
   marine-repair-yard.json         Appendix C.3
+  hvac-two-locations.level1.jsonld  Appendix C.4, Level 1 JSON-LD for the C.1 business
 scripts/
   validate-examples.mjs           validates the examples against the manifest schema and the Appendix A constraints
   extract-from-spec.mjs           regenerates schemas/ and examples/ from spec/v0.1.md
 ```
 
-Tool error results share one shape, `tools-common.schema.json#/$defs/ErrorResult`; the `request_service_booking` output schema describes the success case only.
+Every tool output schema is `oneOf` a success shape and an error shape. The error shape is `tools-common.schema.json#/$defs/ErrorResult`, constrained in each tool's schema to that tool's error codes.
 
 Run `npm run validate` to check the examples. There are no dependencies.
 

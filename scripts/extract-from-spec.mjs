@@ -67,15 +67,14 @@ toolHeads.forEach((t, idx) => {
   const f = fencesIn([t.line, end])
   if (f.length !== 2) throw new Error(`${t.name}: expected 2 fences (input, output), found ${f.length}`)
   write(`schemas/v0.1/tools/${t.name}.input.schema.json`, withId(JSON.parse(f[0].text), `${t.name}.input.schema.json`, `Input for the Open Service Profile v0.1 tool ${t.name}.`))
-  const outDesc = t.name === 'request_service_booking'
-    ? `Success output for the Open Service Profile v0.1 tool ${t.name}. Errors use tools-common.schema.json#/$defs/ErrorResult.`
-    : `Output for the Open Service Profile v0.1 tool ${t.name}.`
+  const outDesc = `Output for the Open Service Profile v0.1 tool ${t.name}: oneOf the success shape or an ErrorResult constrained to this tool's error codes.`
   write(`schemas/v0.1/tools/${t.name}.output.schema.json`, withId(JSON.parse(f[1].text), `${t.name}.output.schema.json`, outDesc))
 })
 
 // Appendix C
 const cRange = sectionRange(/^## Appendix C\./, 2)
-const names = { 'C.1': 'hvac-two-locations', 'C.2': 'auto-repair-single-bay', 'C.3': 'marine-repair-yard' }
+// C.4 is JSON-LD, not a manifest; it is written with a .jsonld extension so validate-examples.mjs skips it.
+const names = { 'C.1': 'hvac-two-locations.json', 'C.2': 'auto-repair-single-bay.json', 'C.3': 'marine-repair-yard.json', 'C.4': 'hvac-two-locations.level1.jsonld' }
 for (let i = cRange[0]; i < cRange[1]; i++) {
   const m = spec[i].match(/^### (C\.\d) /)
   if (!m) continue
@@ -83,5 +82,6 @@ for (let i = cRange[0]; i < cRange[1]; i++) {
   for (let j = i + 1; j < cRange[1]; j++) if (/^### /.test(spec[j])) { end = j; break }
   const f = fencesIn([i, end])
   if (f.length !== 1) throw new Error(`${m[1]}: expected 1 fence, found ${f.length}`)
-  write(`examples/v0.1/${names[m[1]]}.json`, JSON.parse(f[0].text))
+  if (!names[m[1]]) throw new Error(`${m[1]}: no output name mapped`)
+  write(`examples/v0.1/${names[m[1]]}`, JSON.parse(f[0].text))
 }

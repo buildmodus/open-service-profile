@@ -1,53 +1,131 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://www.theservicemarketingguys.com/standards/open-service-profile/v0.1/check_coverage.output.schema.json",
-  "type": "object",
-  "required": [
-    "covered",
-    "canonicalSiteUrl"
-  ],
-  "properties": {
-    "covered": {
-      "type": "boolean"
-    },
-    "areaName": {
-      "type": "string"
-    },
-    "areaUrl": {
-      "$ref": "tools-common.schema.json#/$defs/Url"
-    },
-    "matchedBy": {
-      "enum": [
-        "postalCodes",
-        "radius",
-        "location"
-      ]
-    },
-    "phone": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "message": {
-      "type": "string"
-    },
-    "canonicalSiteUrl": {
-      "$ref": "tools-common.schema.json#/$defs/Url"
-    }
-  },
-  "if": {
-    "properties": {
-      "covered": {
-        "const": true
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "covered",
+        "matchedBy",
+        "canonicalSiteUrl"
+      ],
+      "properties": {
+        "covered": {
+          "type": "boolean"
+        },
+        "areaName": {
+          "type": "string"
+        },
+        "areaUrl": {
+          "$ref": "tools-common.schema.json#/$defs/Url"
+        },
+        "matchedBy": {
+          "enum": [
+            "postalCodes",
+            "location",
+            "radius",
+            "in_shop",
+            "none"
+          ]
+        },
+        "phone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "canonicalSiteUrl": {
+          "$ref": "tools-common.schema.json#/$defs/Url"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "covered": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "matchedBy": {
+                "enum": [
+                  "postalCodes",
+                  "location",
+                  "radius",
+                  "in_shop"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "matchedBy": {
+                "const": "none"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "matchedBy": {
+                "enum": [
+                  "postalCodes",
+                  "location",
+                  "radius"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "areaName"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "matchedBy": {
+                "const": "in_shop"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "message"
+            ]
+          }
+        }
+      ],
+      "not": {
+        "required": [
+          "error"
+        ]
       }
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "tools-common.schema.json#/$defs/ErrorResult"
+        },
+        {
+          "properties": {
+            "error": {
+              "enum": [
+                "invalid_input",
+                "rate_limited"
+              ]
+            }
+          }
+        }
+      ]
     }
-  },
-  "then": {
-    "required": [
-      "areaName",
-      "matchedBy"
-    ]
-  },
-  "description": "Output for the Open Service Profile v0.1 tool check_coverage."
+  ],
+  "description": "Output for the Open Service Profile v0.1 tool check_coverage: oneOf the success shape or an ErrorResult constrained to this tool's error codes."
 }
