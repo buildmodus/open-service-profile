@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.0-draft.4, 2026-09-09
+
+Text-only revision. No rule changes, no schema changes, no new tools.
+
+- Plain-language pass on the non-normative prose: abstract, motivation, prior-art table, terminology, tool purposes, the level and versioning intros, and the appendix intros.
+- Normative sentences rewritten in the active voice. Every requirement keyword keeps its meaning; the only added keywords are in a one-line plain-terms gloss after the RFC 2119 boilerplate.
+- Terminology gains four entries: manifest, origin, producer, consumer.
+- Appendix C.2 heading corrected from "Single-bay auto repair shop" to "Single-location auto repair shop". The example file keeps its name, `examples/v0.1/auto-repair-single-bay.json`.
+- Section 2.1 dating corrected: consumer AI agents began telephoning local businesses about pricing and availability in 2025, and the calls reached home repair and the other service trades in 2026.
+- Appendix D closing summary reformatted as a list; content unchanged.
+
 ## 0.1.0-draft.3, 2026-09-07
 
 Corrections from an outside review checked against sources. No new tools.

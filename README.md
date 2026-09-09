@@ -6,7 +6,7 @@ It covers dispatch-based and shop-based trades: HVAC, plumbing, electrical, land
 
 ## Status
 
-Draft v0.1, published 2026-09-07 and revised the same day (0.1.0-draft.3). The draft is stable enough to implement. Changes before 1.0 arrive as versioned releases with a changelog; see [CONTRIBUTING.md](CONTRIBUTING.md) for how changes are decided.
+Draft v0.1, published 2026-09-07 and revised 2026-09-09 (0.1.0-draft.4, a text-only revision). The draft is stable enough to implement. Changes before 1.0 arrive as versioned releases with a changelog; see [CONTRIBUTING.md](CONTRIBUTING.md) for how changes are decided.
 
 ## Specification
 
