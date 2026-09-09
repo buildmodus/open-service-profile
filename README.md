@@ -32,7 +32,7 @@ schemas/v0.1/
     <tool>.output.schema.json     one per tool, Appendix B
 examples/v0.1/
   hvac-two-locations.json         Appendix C.1
-  auto-repair-single-bay.json     Appendix C.2
+  auto-repair-single-location.json  Appendix C.2
   marine-repair-yard.json         Appendix C.3
   hvac-two-locations.level1.jsonld  Appendix C.4, Level 1 JSON-LD for the C.1 business
 scripts/

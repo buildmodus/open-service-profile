@@ -74,7 +74,7 @@ toolHeads.forEach((t, idx) => {
 // Appendix C
 const cRange = sectionRange(/^## Appendix C\./, 2)
 // C.4 is JSON-LD, not a manifest; it is written with a .jsonld extension so validate-examples.mjs skips it.
-const names = { 'C.1': 'hvac-two-locations.json', 'C.2': 'auto-repair-single-bay.json', 'C.3': 'marine-repair-yard.json', 'C.4': 'hvac-two-locations.level1.jsonld' }
+const names = { 'C.1': 'hvac-two-locations.json', 'C.2': 'auto-repair-single-location.json', 'C.3': 'marine-repair-yard.json', 'C.4': 'hvac-two-locations.level1.jsonld' }
 for (let i = cRange[0]; i < cRange[1]; i++) {
   const m = spec[i].match(/^### (C\.\d) /)
   if (!m) continue
