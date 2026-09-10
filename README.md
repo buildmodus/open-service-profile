@@ -94,6 +94,10 @@ The same generator runs as a web tool on the parent site: https://www.theservice
 
 The generator's core (`src/core/`) is generated from the maintainer's TypeScript and carries a header saying so; edit it there, not here. The manifest validator is part of that core, so the web tool, the public audit, this CLI, and `npm run validate` judge a manifest by one implementation. `src/crawl.mjs`, `src/places.mjs`, `src/validate.mjs`, and `bin/` are this repository's own. Run `npm test` for the CLI tests (Node's built-in runner, fixture sites served locally over a pinned connection).
 
+## Skills
+
+[`skills/`](skills/) holds two Agent Skills: `open-service-profile` for an agent acting on a customer's behalf (discover the manifest, read it, call the tools, send a booking request under the consent rule) and `open-service-profile-publish` for a developer or site owner publishing a profile. Install with `npx skills add buildmodus/open-service-profile`. See [skills/README.md](skills/README.md).
+
 ## Implementations
 
 The Service Marketing Guys serves Level 2 manifests on its client sites, built from the same data that drives each site. Example: https://coastalecoheatair.com/.well-known/open-service-profile
