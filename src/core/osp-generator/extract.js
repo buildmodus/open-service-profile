@@ -5,7 +5,8 @@ import { asJsonLdArray, extractJsonLdNodes, isJsonLdRecord, isLocalBusinessNode,
 import { clampText, toRegionCode, toZip5, toOspSlug, OSP_SLUG } from '../standards/osp-manifest.js';
 import { hoursFromPlacesPeriods, hoursFromSpecification, hoursFromStrings } from './hours.js';
 import { brandFromTitle, firstH1, mailtoLinks, metaContent, normalizeUsPhone, pageTitle, stripTags, telLinks, titleLead, visibleText } from './html.js';
-import { classifyPath } from './pages.js';
+import { findScheduleAction } from '../standards/osp-jsonld.js';
+import { classifyPath, isSameHostOrTwin } from './pages.js';
 /**
  * Facts with provenance, from the fetched pages, the sitemap, and (when the
  * shell supplied one) the Google listing. Every value carries the URL and the
@@ -108,6 +109,43 @@ function isOrganizationNode(node) {
 }
 function addressKey(address) {
     return `${address.street}|${address.postalCode}`.toLowerCase();
+}
+/**
+ * The schedule page a ScheduleAction's target names, as an absolute URL on
+ * this site, or null. The site's own markup stating the address is a fact
+ * (spec 8.1 item 2 requires exactly this value in interfaces.schedulePageUrl),
+ * so it needs no fetch, but it must be on the crawled host or its www twin
+ * and must be a page address: an RFC 6570 query expansion at the end
+ * ({?service,zip}) or a query string carrying placeholders is dropped, and a
+ * template with any other placeholder (a path variable) is not a URL and is
+ * not used.
+ */
+export function scheduleTargetUrl(target, origin) {
+    if (!isJsonLdRecord(target))
+        return null;
+    const raw = typeof target.urlTemplate === 'string' ? target.urlTemplate : typeof target.url === 'string' ? target.url : '';
+    let template = raw.trim().replace(/\{[?&][^{}]*\}$/, '');
+    const queryAt = template.indexOf('?');
+    if (queryAt >= 0 && template.slice(queryAt).includes('{'))
+        template = template.slice(0, queryAt);
+    if (!template || /[{}]/.test(template))
+        return null;
+    const absolute = /^https?:\/\//i.test(template);
+    if (!absolute && !template.startsWith('/'))
+        return null;
+    let url;
+    try {
+        url = new URL(template, `${origin}/`);
+    }
+    catch {
+        return null;
+    }
+    if (url.protocol !== 'https:' && url.protocol !== 'http:')
+        return null;
+    if (!isSameHostOrTwin(url.hostname, new URL(origin).hostname))
+        return null;
+    url.hash = '';
+    return url.toString();
 }
 /** The slug a service URL carries (its last path segment). Never a name: a slug is not a fact about the service. */
 function serviceFromUrl(url) {
@@ -511,19 +549,50 @@ export function extractFacts(input) {
     // usually publishes one table on the business node, which IS the location).
     if (facts.hours && facts.locations.length === 1 && !facts.locations[0].hours)
         facts.locations[0].hours = facts.hours;
-    // ---- Schedule page and contact page: only a page this run read with a 200.
+    // ---- Schedule page and contact page.
     const readPages = pages.filter(read);
     const readOfKind = (kind) => readPages.find((page) => page.kind === kind);
-    const schedule = readOfKind('schedule');
     const contactPage = readOfKind('contact');
-    const schedulePage = schedule ?? contactPage;
-    if (schedulePage) {
+    // The page's own heading names it in llms.txt; the title's lead is the
+    // fallback. Never a label of this tool's choosing.
+    const labelOf = (page) => {
+        const title = pageTitle(page.html);
+        const heading = firstH1(page.html);
+        return clampText(heading ?? (title ? titleLead(title) : undefined), 120);
+    };
+    const samePage = (a, b) => {
+        try {
+            const left = new URL(a);
+            const right = new URL(b);
+            return isSameHostOrTwin(left.hostname, right.hostname) && left.pathname.replace(/\/+$/, '') === right.pathname.replace(/\/+$/, '') && left.search === right.search;
+        }
+        catch {
+            return false;
+        }
+    };
+    // First the site's own JSON-LD: a business node's ScheduleAction naming a
+    // page on this host states the schedule page the same way it states the
+    // phone or the address, whether or not that page was inside the fetch cap.
+    // The Level 1 check compares the page's target to this same value.
+    for (const { node, url } of [...(primary ? [primary] : []), ...locationCandidates]) {
+        const action = findScheduleAction(node);
+        if (!action)
+            continue;
+        const target = scheduleTargetUrl(action.target, origin);
+        if (!target)
+            continue;
+        facts.schedulePageUrl = { value: target, source: jsonLd(url) };
+        const targetPage = readPages.find((page) => samePage(page.url, target));
+        const label = targetPage ? labelOf(targetPage) : clampText(action.name, 120);
+        if (label)
+            facts.schedulePageTitle = label;
+        break;
+    }
+    // Otherwise only a page this run read with a 200: the schedule page, or the contact page in its place.
+    const schedulePage = readOfKind('schedule') ?? contactPage;
+    if (!facts.schedulePageUrl && schedulePage) {
         facts.schedulePageUrl = { value: schedulePage.url, source: { url: schedulePage.url, selector: 'sitemap' } };
-        // The page's own heading names it in llms.txt; the title's lead is the
-        // fallback. Never a label of this tool's choosing.
-        const title = pageTitle(schedulePage.html);
-        const heading = firstH1(schedulePage.html);
-        const label = clampText(heading ?? (title ? titleLead(title) : undefined), 120);
+        const label = labelOf(schedulePage);
         if (label)
             facts.schedulePageTitle = label;
     }
